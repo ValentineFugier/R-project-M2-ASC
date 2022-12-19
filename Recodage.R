@@ -107,5 +107,5 @@ epic$sexe <- fct_recode(epic$sexe,
                         "femme" = "2")
 table(epic$sexe)
 
-
+#Essai commit pour vérifier si erreur corrigée
 
