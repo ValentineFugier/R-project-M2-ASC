@@ -1,5 +1,5 @@
 ## Afin de pouvoir analyser nos données et réaliser des tableaux, il faut commencer par réaliser
-## des recodages des variables pour mieux les exploiter.
+## recoder des variables pour mieux les exploiter.
 
 # Premièrement, on charge les library. library Tidyverse et questionr permettent de charger la base de donnée
 library(dplyr)
@@ -9,11 +9,11 @@ library(tidyverse)
 library(ggplot2)
 library(FactoMineR)
 
-# Deuxiement on charge la base de donée
+# Deuxiement on charge la base de donnée
 epic <- read.csv("repondant.txt", sep="\t")
 
 ## Dans le cadre de ce travail, nous nous souhaitons faire un état des lieux de la natalité en France. 
-## Pour ce faire, nous allons nous intéressons à différentes caractéristiques des personnes. 
+## Pour ce faire, nous nous intéressons à certaines caractéristiques des individus qui sont intéressantes pour notre sujet. 
 
 ### RECODAGE 1
 #Premièrement, nous allons recoder la variable sur les catégories sociaux profesionnelles.
@@ -89,7 +89,7 @@ epic$logement <- fct_recode(epic$logement,
 table(epic$logement)
 
 
-# Nous allons regrouper les catégorie appartement en une seule catégorie.
+# Nous allons regrouper les catégorie "appartement" en une seule catégorie.
 epic$logement2 <- fct_collapse(epic$logement,
                                "Maison indépendante" = "Maison indépendante",
                                "Maison de ville" = "Maison de ville",
