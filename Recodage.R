@@ -13,7 +13,7 @@ library(FactoMineR)
 epic <- read.csv("repondant.txt", sep="\t")
 
 ## Dans le cadre de ce travail, nous nous souhaitons faire un état des lieux de la natalité en France. 
-## Pour ce faire, nous nous intéressons a certaines caractéristiques des individus qui sont intéressantes pour notre sujet. 
+## Pour ce faire, nous nous intéressons à certaines caractéristiques des individus qui sont intéressantes pour notre sujet. 
 
 ### RECODAGE 1
 #Premièrement, nous allons recoder la variable sur les catégories sociaux profesionnelles.
