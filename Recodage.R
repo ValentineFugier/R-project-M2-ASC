@@ -1,4 +1,4 @@
-## Afin de pouvoir analyser nos données et réaliser des tableaux, il faut commencer par réaliser
+## Afin de pouvoir analyser nos données et réaliser des tableaux, il faut commencer par 
 ## recoder des variables pour mieux les exploiter.
 
 # Premièrement, on charge les library. library Tidyverse et questionr permettent de charger la base de donnée
