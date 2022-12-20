@@ -220,3 +220,37 @@ barplot(t4,beside=F,col=c("#F5BCA9","#F7D358","#D8F781"),las=1,horiz=F
 legend("topleft", legend = c("Pas en couple","En couple non cohabitant","En couple cohabitant")
        ,pch=15,cex=1.1,col=c("#D8F781","#F7D358","#F5BCA9"),text.col="black", bty = "n")
 
+### Propotion du nombre d'enfant par rapport aux nombres de relations importantes
+
+rep2 <- read.csv("~/Sociologie/M2/Stats info/repondant.txt", sep="\t")
+table(rep2$H_NBREL)
+table(rep2$NBENF)
+
+rep2$NBENF2 <- as.character(rep2$NBENF)
+rep2$NBENF2[rep2$NBENF == "0"] <- "0"
+rep2$NBENF2[rep2$NBENF == "1"] <- "1"
+rep2$NBENF2[rep2$NBENF == "2"] <- "2"
+rep2$NBENF2[rep2$NBENF == "3"] <- "3"
+rep2$NBENF2[rep2$NBENF %in% c("4","5","6","7","8","9","10")] <- "4 et +"
+table(rep2$NBENF2)
+
+rep2$H_NBREL2 <- as.character(rep2$H_NBREL)
+rep2$H_NBREL2[rep2$H_NBREL == "1"] <- "1"
+rep2$H_NBREL2[rep2$H_NBREL == "2"] <- "2"
+rep2$H_NBREL2[rep2$H_NBREL == "3"] <- "3"
+rep2$H_NBREL2[rep2$H_NBREL == "4"] <- "4"
+rep2$H_NBREL2[rep2$H_NBREL == "5"] <- "5"
+rep2$H_NBREL2[rep2$H_NBREL %in% c("6","7","8","9","10","15")] <- "6 et +"
+table(rep2$H_NBREL2)
+
+t=table(rep2$NBENF2,rep2$H_NBREL2)
+addmargins(t)
+
+par(mar=c(3,3,3,3))
+barplot(prop.table(t,2)*100, 
+        col=rainbow(6),
+        main="Proportion du nombre d'enfants selon le nombre de relations importantes")
+legend("toprigh", 
+       legend = c("0", "1", "2", "3", "4", "5 et +"),
+       pch=15,
+       col=rainbow(6))
