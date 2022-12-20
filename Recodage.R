@@ -109,3 +109,114 @@ table(epic$sexe)
 
 #Essai commit pour vérifier si erreur corrigée
 
+
+
+############## Analyse univariée (1 variable) ################
+
+#### Age
+
+epic$AGEM2 <- cut(epic$AGEM, c(20, 30, 40, 50, 60, 70))
+table(epic$AGEM2)
+
+freq(epic$AGEM2)
+
+par(mar=c(1,1,1,1))
+pie(table(epic$AGEM2), col=rainbow(5),
+    main="Nombre de personne suivant les tranches d'âges", cex=0.7)
+
+
+#### Sexe
+
+par(mar=c(3,3,3,3))
+barplot(table(epic$sexe),col = c("blue","red"), ylim = c(0,5000), main = "Effectif d'hommes et de femmes")
+
+prop.table(table(epic$sexe))
+
+#### Diplome 
+
+table(epic$diplome)
+p1=prop.table(table(epic$diplome))*100
+round(p1,1)
+
+par(mar=c(3,8,2,2))
+g=barplot(table(epic$diplome),horiz=T,col="orange",main="Diplôme obtenu", xlab = "Effectif",
+        las = 1,cex.names = 0.8,cex.axis = 0.8)
+text(0,g,round(p1,1),pos = 4)
+
+
+table(epic$diplome2)
+p2=prop.table(table(epic$diplome2))*100
+round(p2,1)
+
+par(mar=c(3,8,2,2))
+g=barplot(table(epic$diplome2),horiz=T,col="orange",main="Diplôme obtenu", xlab = "Effectif",
+          las = 1,cex.names = 0.8,cex.axis = 0.8, xlim = c(0,4000))
+text(0,g,round(p2,1),pos=4)
+
+
+#### Pcs
+
+table(epic$pcs)
+p3=prop.table(table(epic$pcs))*100
+round(p3,1)
+
+
+par(mar=c(5,17,2,3))
+g=barplot(table(epic$pcs), main = "Nombre de personnes suivant le Pcs", horiz=T, xlab = "Effectif",
+        las = 1 , cex.names=0.8, cex.axis = 0.8, xlim = c(0,2500), col = "yellow3")
+text(0,g,round(p3,1),pos=4)
+
+############## Analyse bivariée (2 variables) ################
+
+#### Nombre d'nfant avec la situation relationnelle
+
+table(epic$couple)
+table(epic$NBENF)
+
+
+t=table(epic$couple,epic$NBENF)
+addmargins(t)
+
+par(mar=c(3,3,3,3))
+barplot(t,
+        col=rainbow(3), main = "Nombre d'enfants suivant la situation relationnelle",
+        ylim=c(0,2000),beside=T,ylab = "Nombre d'individu", xlab = "nombre d'enfant" )
+legend("topright", legend = c("En couple cohabitant","En couple non cohabitant","Pas en couple")
+       ,pch=15,cex=0.8,col=rainbow(3),text.col="black")
+
+par(mar=c(3,3,3,3))
+barplot(prop.table(t,2)*100,
+        col=rainbow(3), main = "Nombre d'enfants suivant la situation relationnelle",
+        ylim=c(0,100),beside=T, ylab = "%", xlab = "nombre d'enfant" )
+legend("topright", legend = c("En couple cohabitant","En couple non cohabitant","Pas en couple")
+       ,pch=15,cex=0.8,col=rainbow(3),text.col="black")
+
+
+#### Sexe avec le code pcs
+
+
+t2 = table(epic$pcs, epic$sexe)
+
+par(mar=c(1,1,1,1))
+mosaicplot(t2,col=c("blue","red"), las = 2,cex.axis = 1)
+
+
+
+####  Sexe avec le diplome obtenu
+
+t3 = table(epic$diplome, epic$sexe)
+
+par(mar=c(1,1,1,1))
+mosaicplot(t3,col=c("blue","red"), las = 2,cex.axis = 1.3)
+
+
+####  situtation relationnelle avec l'âge
+
+t4 = table(epic$couple, epic$AGEM2)
+
+par(mar=c(5,5,5,5))
+barplot(t4,beside=F,col=c("#F5BCA9","#F7D358","#D8F781"),las=1,horiz=F
+        ,space=0.2, xlim = c(0,7))
+legend("topleft", legend = c("Pas en couple","En couple non cohabitant","En couple cohabitant")
+       ,pch=15,cex=1.1,col=c("#D8F781","#F7D358","#F5BCA9"),text.col="black", bty = "n")
+
