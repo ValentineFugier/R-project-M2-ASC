@@ -221,7 +221,7 @@ legend("topleft", legend = c("Pas en couple","En couple non cohabitant","En coup
        ,pch=15,cex=1.1,col=c("#D8F781","#F7D358","#F5BCA9"),text.col="black", bty = "n")
 
 
-### Proportion de parents dont l'enfant est né dans une union de rang 2 ou plus, par génération
+### Proportion de parents dont l'enfant est né dans une union de rang 2 ou plus, par sexe et génération
 
 # Je garde seulement les individus qui ont eu des enfants durant cette relation et qui n'avaient pas d'enfants avant
 rep3 <- filter(rep2, H_ENFANT_C==1)
@@ -229,19 +229,34 @@ rep31 <- filter(rep3, C_ENFPREC==2)
 
 # Je mets ceux qui ont eu 1 relation importante (celle actuelle incluse) dans une variable, et les autres dans une autre.
 rep31$H_NBREL3 <- as.character(rep31$H_NBREL)
-rep31$H_NBREL3[rep31$H_NBREL3 == "1"] <- "relation de rang 1"
 rep31$H_NBREL3[rep31$H_NBREL3 %in% c("2","3","4","5","6","7","8","9","10","15")] <- "relation de rang 2 ou plus"
+rep31$H_NBREL3[rep31$H_NBREL3 == "1"] <- "relation de rang 1"
 table(rep31$H_NBREL3)
 
-# Je réunis ensemble certaines générations
+#Je réunis ensemble certaines générations
 rep31$ANAISR2 <- cut(rep31$ANAISR, c(1948,1950,1959,1969,1988))
 table(rep31$ANAISR2,rep31$H_NBREL3)
 
-# Affichage du graphique
-t2=table(rep31$H_NBREL3,rep31$ANAISR2)
+# Je sépare les filles et les garçons
+rep31f <- filter(rep31, SEXER==2)
+rep31h <- filter(rep31, SEXER==1)
+table(rep31$SEXER)
+table(rep31$H_NBREL3,rep31$ANAISR2)
+table(rep31f$H_NBREL3,rep31f$ANAISR2)
+
+#Je fais le graphique
+t2=table(rep31f$H_NBREL3,rep31f$ANAISR2)
 addmargins(t2)
 
 par(mar=c(3,3,3,3))
-barplot(prop.table(t2,2)*100, 
+barplot(1-prop.table(t2,2)*100+100, 
         col=rainbow('4'),
-        main="")
+        main="Proportion des femmes dont l'enfant est né dans une union de rang 2 ou plus, par génération")
+
+t3=table(rep31h$H_NBREL3,rep31h$ANAISR2)
+addmargins(t3)
+
+par(mar=c(3,3,3,3))
+barplot(1-prop.table(t3,2)*100+100, 
+        col=rainbow('4'),
+        main="Proportion des hommes dont l'enfant est né dans une union de rang 2 ou plus, par génération")
