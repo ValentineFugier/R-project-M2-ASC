@@ -220,3 +220,28 @@ barplot(t4,beside=F,col=c("#F5BCA9","#F7D358","#D8F781"),las=1,horiz=F
 legend("topleft", legend = c("Pas en couple","En couple non cohabitant","En couple cohabitant")
        ,pch=15,cex=1.1,col=c("#D8F781","#F7D358","#F5BCA9"),text.col="black", bty = "n")
 
+
+### Proportion de parents dont l'enfant est né dans une union de rang 2 ou plus, par génération
+
+# Je garde seulement les individus qui ont eu des enfants durant cette relation et qui n'avaient pas d'enfants avant
+rep3 <- filter(rep2, H_ENFANT_C==1)
+rep31 <- filter(rep3, C_ENFPREC==2)
+
+# Je mets ceux qui ont eu 1 relation importante (celle actuelle incluse) dans une variable, et les autres dans une autre.
+rep31$H_NBREL3 <- as.character(rep31$H_NBREL)
+rep31$H_NBREL3[rep31$H_NBREL3 == "1"] <- "relation de rang 1"
+rep31$H_NBREL3[rep31$H_NBREL3 %in% c("2","3","4","5","6","7","8","9","10","15")] <- "relation de rang 2 ou plus"
+table(rep31$H_NBREL3)
+
+# Je réunis ensemble certaines générations
+rep31$ANAISR2 <- cut(rep31$ANAISR, c(1948,1950,1959,1969,1988))
+table(rep31$ANAISR2,rep31$H_NBREL3)
+
+# Affichage du graphique
+t2=table(rep31$H_NBREL3,rep31$ANAISR2)
+addmargins(t2)
+
+par(mar=c(3,3,3,3))
+barplot(prop.table(t2,2)*100, 
+        col=rainbow('4'),
+        main="")
