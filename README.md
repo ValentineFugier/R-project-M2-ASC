@@ -1,9 +1,9 @@
 # R-project-M2-ASC
-Projet de groupe sur le logiciel R des M2 ASC : Floriane Limbour, Julien Codemo, Valentine Fugier et Erwan Pradeilles
+Projet de groupe sur le logiciel R des M2 ASC et M2 MIASH : Floriane Limbour, Julien Codemo, Valentine Fugier et Erwan Pradeilles
 
 Dans le cadre de notre cours Outils et logiciels d'analyse, nous réalisons une analyse à partir
 de l'enquête EPIC sur l'impact des ruptures d'union et des nouvelles unions sur la natalité. 
-Autrement dit, est-ce que les ruptures d'union et les remises en couple impactent les naissances ? 
+Autrement dit, notre question est : est-ce que les ruptures d'union et les remises en couple impactent les naissances ? 
 Notre souhait est d'actualiser l'article de la démographe Eva Beaujouan publié en 2010 dans laquelle
 elle aborde cette thématique. 
 
