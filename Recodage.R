@@ -221,6 +221,114 @@ legend("topleft", legend = c("Pas en couple","En couple non cohabitant","En coup
        ,pch=15,cex=1.1,col=c("#D8F781","#F7D358","#F5BCA9"),text.col="black", bty = "n")
 
 
+### Nombre d'années entre le début de relation et la naissance du premier enfant en proportion
+
+epic2 <- filter(epic, H_ENFANT_C==1)
+epic3 <- filter(epic2, C_ENFPREC==2)
+epic3 <- filter(epic3, H_ADEB_C!=9999)
+epic3 <- filter(epic3, IND_AGE_1ER_ENF!=9999)
+
+epic3$arrivee <- epic3$H_AENF1_C - epic3$H_ADEB_C
+epic4 <- filter(epic3, arrivee >= 0)
+epic4 <- filter(epic4, arrivee <= 9)
+tabarrivee = table(epic4$arrivee)
+freq(tabarrivee)
+
+par(mar=c(1,1,1,1))
+pie(prop.table(tabarrivee)*100,
+    xlim = c(0,9),
+    col=rainbow('9'))
+
+
+### Probabilité de faire des enfants à nouveau dans le couple actuelle selon le nombre d'enfants déjà eu avec d'autres
+
+epic5 <- filter(epic, H_ENFANT_C==1)
+epic5$nbrenfpass <- epic5$NBENF - epic5$H_NBENF_C
+freq(epic5$nbrenfpass)
+
+
+### Proportion de parents dont l'enfant est né dans une union de rang 2 ou plus, par sexe et génération
+
+rep2 <- read.csv("~/Sociologie/M2/Stats info/repondant.txt", sep="\t")
+
+# Je garde seulement les individus qui ont eu des enfants durant cette relation et qui n'avaient pas d'enfants avant
+
+rep3 <- filter(rep2, H_ENFANT_C==1)
+rep31 <- filter(rep3, C_ENFPREC==2)
+
+# Je mets ceux qui ont eu 1 relation importante (celle actuelle incluse) dans une variable, et les autres dans une autre.
+
+rep31$H_NBREL3 <- as.character(rep31$H_NBREL)
+rep31$H_NBREL3[rep31$H_NBREL3 %in% c("2","3","4","5","6","7","8","9","10","15")] <- "relation de rang 2 ou plus"
+rep31$H_NBREL3[rep31$H_NBREL3 == "1"] <- "relation de rang 1"
+table(rep31$H_NBREL3)
+
+#Je réunis ensemble certaines générations
+
+rep31$ANAISR2 <- cut(rep31$ANAISR, c(1948,1950,1959,1969,1988))
+table(rep31$ANAISR2,rep31$H_NBREL3)
+
+# Je sépare les filles et les garçons
+
+rep31f <- filter(rep31, SEXER==2)
+rep31h <- filter(rep31, SEXER==1)
+table(rep31$SEXER)
+table(rep31$H_NBREL3,rep31$ANAISR2)
+table(rep31f$H_NBREL3,rep31f$ANAISR2)
+
+#Je fais le graphique
+
+t2=table(rep31f$H_NBREL3,rep31f$ANAISR2)
+addmargins(t2)
+
+par(mar=c(3,3,3,3))
+barplot(1-prop.table(t2,2)*100+100, 
+        col=rainbow('4'),
+        main="Proportion des femmes dont l'enfant est né 
+        dans une union de rang 2 ou plus, par génération")
+
+t3=table(rep31h$H_NBREL3,rep31h$ANAISR2)
+addmargins(t3)
+
+par(mar=c(3,3,3,3))
+barplot(1-prop.table(t3,2)*100+100, 
+        col=rainbow('4'),
+        main="Proportion des hommes dont l'enfant est né 
+        une union de rang 2 ou plus, par génération")
+
+### Nombre d'années entre le début de relation et la naissance du premier en fant, par âge au début de la relation et par nombre de relations importantes
+
+# On garde seulement les individus qui ont eu des enfants durant cette relation et qui n'avaient pas d'enfants avant
+
+rep3 <- filter(rep2, H_ENFANT_C==1)
+rep31 <- filter(rep3, C_ENFPREC==2)
+rep31 <- filter(rep31, H_AENF1_C!=9999)
+rep31 <- filter(rep31, H_ADEB_C!=9999)
+rep31 <- filter(rep31, IND_AGE_1ER_ENF!=9999)
+
+# On stock la moyenne de la différence entre l'année de début de la relation et l'année de naissance de l'enfant par age dans une variable indépendante
+moyage <- numeric(1)
+for(i in 1:45){
+  temp1 <- filter(rep31, IND_AGE_1ER_ENF==i)
+  moyage[i] <- mean(temp1$H_AENF1_C - temp1$H_ADEB_C)
+}
+plot(moyage,  xlim = c(18, 45))
+lines(moyage)
+
+# On stock la moyenne de la différence entre l'année de début de la relation et l'année de naissance de l'enfant par relation importante dans une variable indépendante
+
+moyrel <- numeric(1)
+for(i in 1:5){
+  temp2 <- filter(rep31, H_NBREL==i)
+  moyrel[i] <- mean(temp2$H_AENF1_C - temp2$H_ADEB_C)
+}
+
+# On trace le graphique
+par(mar=c(5,5,5,5))
+plot(moyrel,  xlim = c(1,5))
+lines(moyrel)
+
+
 ### Proportion de parents dont l'enfant est né dans une union de rang 2 ou plus, par sexe et génération
 
 # Je garde seulement les individus qui ont eu des enfants durant cette relation et qui n'avaient pas d'enfants avant
@@ -261,28 +369,3 @@ barplot(1-prop.table(t3,2)*100+100,
         col=rainbow('4'),
         main="Proportion des hommes dont l'enfant est né dans une union de rang 2 ou plus, par génération")
 epic <- read.csv("~/Sociologie/M2/Stats info/repondant.txt", sep="\t")
-
-### Nombre d'années entre le début de relation et la naissance du premier enfant en proportion
-
-epic2 <- filter(epic, H_ENFANT_C==1)
-epic3 <- filter(epic2, C_ENFPREC==2)
-epic3 <- filter(epic3, H_ADEB_C!=9999)
-epic3 <- filter(epic3, IND_AGE_1ER_ENF!=9999)
-
-epic3$arrivee <- epic3$H_AENF1_C - epic3$H_ADEB_C
-epic4 <- filter(epic3, arrivee >= 0)
-epic4 <- filter(epic4, arrivee <= 9)
-tabarrivee = table(epic4$arrivee)
-freq(tabarrivee)
-
-par(mar=c(1,1,1,1))
-pie(prop.table(tabarrivee)*100,
-    xlim = c(0,9),
-    col=rainbow('9'))
-
-
-### Probabilité de faire des enfants à nouveau dans le couple actuelle selon le nombre d'enfants déjà eu avec d'autres
-
-epic5 <- filter(epic, H_ENFANT_C==1)
-epic5$nbrenfpass <- epic5$NBENF - epic5$H_NBENF_C
-freq(epic5$nbrenfpass)
