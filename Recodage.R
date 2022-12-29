@@ -260,3 +260,29 @@ par(mar=c(3,3,3,3))
 barplot(1-prop.table(t3,2)*100+100, 
         col=rainbow('4'),
         main="Proportion des hommes dont l'enfant est né dans une union de rang 2 ou plus, par génération")
+epic <- read.csv("~/Sociologie/M2/Stats info/repondant.txt", sep="\t")
+
+### Nombre d'années entre le début de relation et la naissance du premier enfant en proportion
+
+epic2 <- filter(epic, H_ENFANT_C==1)
+epic3 <- filter(epic2, C_ENFPREC==2)
+epic3 <- filter(epic3, H_ADEB_C!=9999)
+epic3 <- filter(epic3, IND_AGE_1ER_ENF!=9999)
+
+epic3$arrivee <- epic3$H_AENF1_C - epic3$H_ADEB_C
+epic4 <- filter(epic3, arrivee >= 0)
+epic4 <- filter(epic4, arrivee <= 9)
+tabarrivee = table(epic4$arrivee)
+freq(tabarrivee)
+
+par(mar=c(1,1,1,1))
+pie(prop.table(tabarrivee)*100,
+    xlim = c(0,9),
+    col=rainbow('9'))
+
+
+### Probabilité de faire des enfants à nouveau dans le couple actuelle selon le nombre d'enfants déjà eu avec d'autres
+
+epic5 <- filter(epic, H_ENFANT_C==1)
+epic5$nbrenfpass <- epic5$NBENF - epic5$H_NBENF_C
+freq(epic5$nbrenfpass)
