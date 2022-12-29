@@ -367,3 +367,29 @@ barplot(1-prop.table(t3,2)*100+100,
         col=rainbow('4'),
         main="Proportion des hommes dont l'enfant est né dans une union de rang 2 ou plus, par génération")
 epic <- read.csv("~/Sociologie/M2/Stats info/repondant.txt", sep="\t")
+
+### Nombre d'enfants avec le nombre de relations importantes
+
+table(rep2$H_NBREL)
+table(rep2$NBENF)
+
+rep2$NBENF2 <- as.character(rep2$NBENF)
+rep2$NBENF2[rep2$NBENF %in% c("4","5","6","7","8","9","10")] <- "5 enfants et +"
+table(rep2$NBENF2)
+
+rep2$H_NBREL2 <- as.character(rep2$H_NBREL)
+rep2$H_NBREL2[rep2$H_NBREL %in% c("6","7","8","9","10","15")] <- "6 relations et +"
+table(rep2$H_NBREL2)
+
+t=table(rep2$NBENF2,rep2$H_NBREL2)
+addmargins(t)
+
+par(mar=c(3,3,3,3))
+barplot(prop.table(t,2)*100, 
+        col=rainbow(6),
+        main="Proportion de relations importantes selon le nombre d'enfants",)
+
+legend("topright",
+       legend = c("0", "1", "2", "3", "4", ">4"),
+       pch=15,
+       col=rainbow(6))
