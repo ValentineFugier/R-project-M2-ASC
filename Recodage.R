@@ -370,8 +370,7 @@ epic <- read.csv("~/Sociologie/M2/Stats info/repondant.txt", sep="\t")
 
 ### Nombre d'enfants avec le nombre de relations importantes
 
-table(rep2$H_NBREL)
-table(rep2$NBENF)
+rep2 <- epic
 
 rep2$NBENF2 <- as.character(rep2$NBENF)
 rep2$NBENF2[rep2$NBENF %in% c("4","5","6","7","8","9","10")] <- "5 enfants et +"
