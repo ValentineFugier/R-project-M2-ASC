@@ -249,11 +249,9 @@ freq(epic5$nbrenfpass)
 
 ### Proportion de parents dont l'enfant est né dans une union de rang 2 ou plus, par sexe et génération
 
-rep2 <- read.csv("~/Sociologie/M2/Stats info/repondant.txt", sep="\t")
-
 # Je garde seulement les individus qui ont eu des enfants durant cette relation et qui n'avaient pas d'enfants avant
 
-rep3 <- filter(rep2, H_ENFANT_C==1)
+rep3 <- filter(epic, H_ENFANT_C==1)
 rep31 <- filter(rep3, C_ENFPREC==2)
 
 # Je mets ceux qui ont eu 1 relation importante (celle actuelle incluse) dans une variable, et les autres dans une autre.
